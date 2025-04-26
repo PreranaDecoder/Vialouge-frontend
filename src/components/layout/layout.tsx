@@ -17,50 +17,64 @@ import {
 
 const navItems = [
   {
-    label: "Upload Contacts List",
-    icon: <Upload size={18} />,
-    path: "/upload-contacts",
-  },
-  { label: "Blacklist Contacts", icon: <Ban size={18} />, path: "/blacklist" },
-  {
-    label: "Distributed Ledger",
-    icon: <MessageSquare size={18} />,
-    children: [
-      { label: "Sender ID's", path: "/sender-ids" },
-      { label: "Content Templates", path: "/content-templates" },
+    heading: "Contact Management",
+    items: [
+      {
+        label: "Upload Contacts List",
+        icon: <Upload size={18} />,
+        path: "/upload-contacts",
+      },
+      {
+        label: "Blacklist Contacts",
+        icon: <Ban size={18} />,
+        path: "/blacklist",
+      },
     ],
   },
   {
-    label: "CTA Management",
-    icon: <Link2 size={18} />,
-    children: [
-      { label: "Shortened URLs", path: "/shortened-urls" },
-      { label: "Domain Manager", path: "/domain-manager" },
+    heading: "SMS",
+    items: [
+      {
+        label: "Distributed Ledger",
+        icon: <MessageSquare size={18} />,
+        children: [
+          { label: "Sender ID's", path: "/sender-ids" },
+          { label: "Content Templates", path: "/content-templates" },
+        ],
+      },
+      {
+        label: "CTA Management",
+        icon: <Link2 size={18} />,
+        children: [
+          { label: "Shortened URLs", path: "/shortened-urls" },
+          { label: "Domain Manager", path: "/domain-manager" },
+        ],
+      },
+      {
+        label: "Campaigns",
+        icon: <Volume2 size={18} />,
+        children: [
+          { label: "Static Campaign", path: "/static-campaign" },
+          { label: "Dynamic Campaign", path: "/dynamic-campaign" },
+          { label: "Scheduled Campaigns", path: "/scheduled-campaigns" },
+        ],
+      },
+      {
+        label: "Reports",
+        icon: <FileText size={18} />,
+        children: [
+          { label: "Summary Report", path: "/summary-report" },
+          { label: "Sender Wise", path: "/sender-wise" },
+          { label: "Detailed Report", path: "/detailed-report" },
+        ],
+      },
+      { label: "Downloads", icon: <Download size={18} />, path: "/downloads" },
+      {
+        label: "Documentation",
+        icon: <FileQuestion size={18} />,
+        path: "/documentation",
+      },
     ],
-  },
-  {
-    label: "Campaigns",
-    icon: <Volume2 size={18} />,
-    children: [
-      { label: "Static Campaign", path: "/static-campaign" },
-      { label: "Dynamic Campaign", path: "/dynamic-campaign" },
-      { label: "Scheduled Campaigns", path: "/scheduled-campaigns" },
-    ],
-  },
-  {
-    label: "Reports",
-    icon: <FileText size={18} />,
-    children: [
-      { label: "Summary Report", path: "/summary-report" },
-      { label: "Sender Wise", path: "/sender-wise" },
-      { label: "Detailed Report", path: "/detailed-report" },
-    ],
-  },
-  { label: "Downloads", icon: <Download size={18} />, path: "/downloads" },
-  {
-    label: "Documentation",
-    icon: <FileQuestion size={18} />,
-    path: "/documentation",
   },
 ];
 
@@ -117,11 +131,11 @@ export const Layout: FC = () => {
               ? "translate-x-0"
               : "-translate-x-full lg:translate-x-0"
           }
-          transition-transform duration-300 bg-white border-r border-gray-200
+          transition-transform duration-300 bg-white border-r border-[#E2E8F0]
         `}
       >
         <div className="flex flex-col h-full">
-          <div className="p-4 border-b border-gray-200">
+          <div className="p-4 border-b border-[#E2E8F0]">
             <img
               src="/src/assets/Logo-black.png"
               alt="Vialogue"
@@ -134,68 +148,86 @@ export const Layout: FC = () => {
                 variant="ghost"
                 className={`w-full justify-start ${
                   location.pathname === "/dashboard"
-                    ? "bg-emerald-50/50 text-emerald-600"
-                    : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
+                    ? "bg-[#F0FDF4] text-[#059669]"
+                    : "text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
                 } mb-6`}
               >
                 <LayoutGrid size={18} className="mr-2" /> Dashboard
               </Button>
             </Link>
-            {navItems.map((item, index) => (
-              <div key={index} className="mb-1">
-                {item.children ? (
-                  <>
-                    <Button
-                      variant="ghost"
-                      className="w-full justify-start h-9 px-2 text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                      onClick={() => toggleExpanded(item.label)}
-                    >
-                      {item.icon && (
-                        <span className="mr-2 text-gray-400">{item.icon}</span>
-                      )}
-                      <span className="text-sm">{item.label}</span>
-                      <ChevronDown
-                        size={16}
-                        className={`ml-auto transition-transform ${
-                          expandedItems.includes(item.label) ? "rotate-180" : ""
-                        }`}
-                      />
-                    </Button>
-                    {expandedItems.includes(item.label) && (
-                      <div className="ml-8 space-y-1 mt-1">
-                        {item.children.map((child, childIndex) => (
-                          <Link key={childIndex} to={child.path}>
-                            <Button
-                              variant="ghost"
-                              className={`w-full justify-start h-8 px-2 text-sm ${
-                                location.pathname === child.path
-                                  ? "text-emerald-600 bg-emerald-50/50"
-                                  : "text-gray-500 hover:text-gray-900 hover:bg-gray-50"
-                              }`}
-                            >
-                              {child.label}
-                            </Button>
-                          </Link>
-                        ))}
-                      </div>
+
+            {navItems.map((section, sectionIndex) => (
+              <div key={sectionIndex} className="mb-6">
+                <h2 className="text-xs font-medium text-[#64748B] mb-4 px-2">
+                  {section.heading}
+                </h2>
+                {section.items.map((item, index) => (
+                  <div key={index} className="mb-1">
+                    {item.children ? (
+                      <>
+                        <Button
+                          variant="ghost"
+                          className="w-full justify-start h-9 px-2 text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
+                          onClick={() => toggleExpanded(item.label)}
+                        >
+                          {item.icon && (
+                            <span className="mr-2 text-[#94A3B8]">
+                              {item.icon}
+                            </span>
+                          )}
+                          <span className="text-sm">{item.label}</span>
+                          <ChevronDown
+                            size={16}
+                            className={`ml-auto transition-transform ${
+                              expandedItems.includes(item.label)
+                                ? "rotate-180"
+                                : ""
+                            }`}
+                          />
+                        </Button>
+                        {expandedItems.includes(item.label) && (
+                          <div className="relative pl-7">
+                            <div className="absolute left-[1.1rem] top-0 bottom-0 w-[1.5px] bg-[#E2E8F0]" />
+                            {item.children.map((child, childIndex) => (
+                              <Link key={childIndex} to={child.path}>
+                                <Button
+                                  variant="ghost"
+                                  className={`w-full justify-start h-8 px-4 text-sm ${
+                                    location.pathname === child.path
+                                      ? "text-[#059669] bg-[#F0FDF4]"
+                                      : "text-[#64748B] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
+                                  }`}
+                                >
+                                  {child.label}
+                                </Button>
+                              </Link>
+                            ))}
+                          </div>
+                        )}
+                      </>
+                    ) : (
+                      <Link to={item.path}>
+                        <Button
+                          variant="ghost"
+                          className={`w-full justify-start h-9 px-2 ${
+                            location.pathname === item.path
+                              ? "text-[#059669] bg-[#F0FDF4]"
+                              : "text-[#475569] hover:text-[#0F172A] hover:bg-[#F8FAFC]"
+                          }`}
+                        >
+                          {item.icon && (
+                            <span className="mr-2 text-[#94A3B8]">
+                              {item.icon}
+                            </span>
+                          )}
+                          <span className="text-sm">{item.label}</span>
+                        </Button>
+                      </Link>
                     )}
-                  </>
-                ) : (
-                  <Link to={item.path}>
-                    <Button
-                      variant="ghost"
-                      className={`w-full justify-start h-9 px-2 ${
-                        location.pathname === item.path
-                          ? "text-emerald-600 bg-emerald-50/50"
-                          : "text-gray-600 hover:text-gray-900 hover:bg-gray-50"
-                      }`}
-                    >
-                      {item.icon && (
-                        <span className="mr-2 text-gray-400">{item.icon}</span>
-                      )}
-                      <span className="text-sm">{item.label}</span>
-                    </Button>
-                  </Link>
+                  </div>
+                ))}
+                {sectionIndex < navItems.length - 1 && (
+                  <div className="my-4 border-t border-[#E2E8F0]" />
                 )}
               </div>
             ))}
@@ -205,10 +237,22 @@ export const Layout: FC = () => {
 
       {/* Main Content */}
       <main
-        className={`flex-1 min-h-screen ${isSidebarOpen ? "lg:ml-64" : ""}`}
+        className={`
+          flex-1 min-h-screen 
+          ${isSidebarOpen ? "lg:ml-64" : ""} 
+          transition-all duration-300
+        `}
       >
         <Outlet />
       </main>
+
+      {/* Overlay for mobile */}
+      {isMobile && isSidebarOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-50 z-30"
+          onClick={toggleSidebar}
+        />
+      )}
     </div>
   );
 };
